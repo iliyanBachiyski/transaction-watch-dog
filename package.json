@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/iliyanBachiyski/transaction-watch-dog/issues"
   },
-  "homepage": "https://github.com/iliyanBachiyski/transaction-watch-dog#readme"
+  "homepage": "https://github.com/iliyanBachiyski/transaction-watch-dog#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
