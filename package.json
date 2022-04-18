@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/iliyanBachiyski/transaction-watch-dog#readme",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "web3": "^1.7.3"
   }
 }
