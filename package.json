@@ -1,0 +1,19 @@
+{
+  "name": "transaction-watch-dog",
+  "version": "1.0.0",
+  "description": "Monitoring all Ethereum transactions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iliyanBachiyski/transaction-watch-dog.git"
+  },
+  "author": "Iliyan Bachiyski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iliyanBachiyski/transaction-watch-dog/issues"
+  },
+  "homepage": "https://github.com/iliyanBachiyski/transaction-watch-dog#readme"
+}
