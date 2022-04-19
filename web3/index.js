@@ -1,8 +1,5 @@
 const Web3 = require("web3");
-
-const PROJECT_ID = "3f20a4faa87f4d3c9e81730c5bcae5bf";
-const MAINNET_HTTPS_URL = `https://mainnet.infura.io/v3/${PROJECT_ID}`;
-const MAINNET_SOCKET_URL = `wss://mainnet.infura.io/ws/v3/${PROJECT_ID}`;
+const { MAINNET_HTTPS_URL, MAINNET_SOCKET_URL } = require("../config");
 
 const web3 = new Web3(new Web3.providers.HttpProvider(MAINNET_HTTPS_URL));
 const web3SocketProvider = new Web3(
