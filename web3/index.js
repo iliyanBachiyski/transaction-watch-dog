@@ -36,8 +36,7 @@ const subscribeForLogs = () => {
       const transaction = await getTransactionByHash(event.transactionHash);
       if (transaction) {
         const { hash, from, to, value, blockNumber } = transaction;
-        const transactionEthValue = web3.utils.fromWei(value, "ether");
-        console.log("Transaction cost -> ", transactionEthValue);
+        const transactionEthValue = Number(web3.utils.fromWei(value, "ether"));
       }
     });
 };

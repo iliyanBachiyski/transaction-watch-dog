@@ -5,6 +5,8 @@ require("../database");
 const configurationRoute = require("./configurationRoutes");
 const app = express();
 
+app.use(express.json());
+
 app.get("/", async (req, res) => {
   const address = "0x5A0b54D5dc17e0AadC383d2db43B0a0D3E029c4c";
   let message;
