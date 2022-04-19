@@ -2,6 +2,7 @@ const express = require("express");
 const { PORT } = require("../config");
 const { getEthBalanceByAddress } = require("../web3");
 require("../database");
+const configurationRoute = require("./routes");
 const app = express();
 
 app.get("/", async (req, res) => {
@@ -15,6 +16,8 @@ app.get("/", async (req, res) => {
   }
   res.send(message);
 });
+
+app.use("/configuration", configurationRoute);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
