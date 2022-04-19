@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const { StatusCodes } = require("http-status-codes");
 const { v4: uuidv4 } = require("uuid");
-const { isValidAddress, loadNewConfiguration } = require("../../web3");
+const { isValidAddress, loadNewConfiguration } = require("../web3");
 
-const { DynamicConfigurationModel } = require("../../database");
+const { DynamicConfigurationModel } = require("../database");
 
 const validateCreateDynamicConfigurationRequest = async function (
   req,

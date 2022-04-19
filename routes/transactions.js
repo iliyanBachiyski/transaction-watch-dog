@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { StatusCodes } = require("http-status-codes");
 
-const { TransactionSchemaModel } = require("../../database");
+const { TransactionSchemaModel } = require("../database");
 
 router.get("/", async (_, res) => {
   try {
