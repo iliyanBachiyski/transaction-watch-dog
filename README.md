@@ -5,25 +5,25 @@ Ruling system that is monitoring all Ethereum transactions. Every transaction is
 **Important: When new configuration comes up, it is loaded without the need of restart.\
 Important: After restart the latest configuration will be used.\
 Important: After restart the latest configuration will be used.\
-Important: Possible issues with DB connection because of the IP restrictions**
+Important: Possible issues with DB connection because of the IP restrictions.**
 
 ## How to start the application:
 
-In the project directory, you can run:
+#### In the project directory, you can run:
 
 ### `npm install`
 
-Install all necessary dependencies
+##### Install all necessary dependencies
 
 ### `npm start`
 
-Runs the application on port 8080. Also, initialize DB connection.
+##### Runs the application on port 8080. Also, initialize DB connection.
 
 ## Available API Endpoints
 
 ### `[GET] /transactions`
 
-Returning all transactions, which were saved based on the dynamic configuration.
+##### Returning all transactions, which were saved based on the dynamic configuration.
 
 **Respone:**
 
@@ -50,7 +50,7 @@ Returning all transactions, which were saved based on the dynamic configuration.
 
 ### `[GET] /transactions/${id}`
 
-Returning a single transaction, based on id.
+##### Returning a single transaction, based on id.
 
 **Respone:**
 
@@ -72,7 +72,7 @@ Returning a single transaction, based on id.
 
 ### `[POST] /configuration`
 
-Create a dynamic configurations.
+##### Create a dynamic configurations.
 
 **Body:**
 
@@ -92,7 +92,7 @@ Create a dynamic configurations.
 
 ### `[GET] /configuration`
 
-Returning all dynamic configurations.
+##### Returning all dynamic configurations.
 
 **Respone:**
 
@@ -114,7 +114,7 @@ Returning all dynamic configurations.
 
 ### `[GET] /configuration/${id}`
 
-Returning a single configuration, based on id.
+##### Returning a single configuration, based on id.
 
 **Respone:**
 
