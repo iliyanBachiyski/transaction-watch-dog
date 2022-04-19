@@ -2,7 +2,8 @@ const express = require("express");
 const { PORT } = require("../config");
 const { getEthBalanceByAddress } = require("../web3");
 require("../database");
-const configurationRoute = require("./configurationRoutes");
+const configurationRoute = require("./routes/configuration");
+const transactionsRoute = require("./routes/transactions");
 const app = express();
 
 app.use(express.json());
@@ -20,6 +21,7 @@ app.get("/", async (req, res) => {
 });
 
 app.use("/configuration", configurationRoute);
+app.use("/transactions", transactionsRoute);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
