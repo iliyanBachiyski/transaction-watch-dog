@@ -32,25 +32,26 @@ const subscribeForLogs = () => {
         console.log("[PendingTransactions Error] -> ", error);
       }
     })
-    .on("data", function (transaction) {
-      getTransactionByHash(transaction.transactionHash);
+    .on("data", async function (event) {
+      const transaction = await getTransactionByHash(event.transactionHash);
+      if (transaction) {
+        const { hash, from, to, value, blockNumber } = transaction;
+        const transactionEthValue = web3.utils.fromWei(value, "ether");
+        console.log("Transaction cost -> ", transactionEthValue);
+      }
     });
 };
 
 const getTransactionByHash = (hash) => {
-  web3.eth.getTransaction(hash, async (error, transaction) => {
-    if (error) {
-      console.log("[GetTransaction Error] -> ", error);
-    } else if (transaction) {
-      const { from, to, value, hash } = transaction;
-      const transactionEthValue = web3.utils.fromWei(value, "ether");
-      console.log(transaction);
-      console.log(
-        "[GetTransaction Info] -> ",
-        `[${hash}]`,
-        `Sending ${transactionEthValue} ETH from ${from} to ${to}.`
-      );
-    }
+  return new Promise((resolve, _) => {
+    web3.eth.getTransaction(hash, (error, transaction) => {
+      if (error) {
+        console.log("[GetTransaction Error] -> ", error);
+        resolve(null);
+      } else if (transaction) {
+        resolve(transaction);
+      }
+    });
   });
 };
 
