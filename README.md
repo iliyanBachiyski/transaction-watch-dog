@@ -2,6 +2,11 @@
 
 Ruling system that is monitoring all Ethereum transactions. Every transaction is tested against a rule set called dynamic configuration. If it is matching all of the rules, the transaction is stored to the database. Foreign key to the configuration is also stored to the transaction.
 
+The application is using Infura as a Ethereum Native Node Provider.\
+Web3.js is used to interact with the remote node using HTTP and WebSocket.\
+Express.js is used for API building\
+MongoDB is used for Database
+
 **Important: When new configuration comes up, it is loaded without the need of restart.\
 Important: After restart the latest configuration will be used.\
 Important: After restart the latest configuration will be used.\
@@ -128,5 +133,3 @@ Important: Possible issues with DB connection because of the IP restrictions.**
        "created_at":"Date",
        "id":"uuid"
     }
-
-**The application is using Infura as a Ethereum Native Node Provider. Web3.js is using for to interact with the remote node using HTTP and WebSocket.**
