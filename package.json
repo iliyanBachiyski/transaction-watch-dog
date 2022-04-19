@@ -4,6 +4,8 @@
   "description": "Monitoring all Ethereum transactions.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "start-hot": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
