@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 const TransactionSchema = new Schema(
   {
     uuid: { type: String, required: true, unique: true },
-    transactionHash: { type: String, required: true, unique: true },
+    transactionHash: { type: String, required: true },
     configuration: {
       type: Schema.Types.ObjectId,
       ref: "DynamicConfiguration",

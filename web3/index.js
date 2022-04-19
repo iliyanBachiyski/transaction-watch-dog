@@ -1,6 +1,10 @@
 const Web3 = require("web3");
+const { v4: uuidv4 } = require("uuid");
 const { MAINNET_HTTPS_URL, MAINNET_SOCKET_URL } = require("../config");
-const { DynamicConfigurationModel } = require("../database");
+const {
+  DynamicConfigurationModel,
+  TransactionSchemaModel,
+} = require("../database");
 
 const web3 = new Web3(new Web3.providers.HttpProvider(MAINNET_HTTPS_URL));
 const web3SocketProvider = new Web3(
@@ -36,10 +40,50 @@ const subscribeForLogs = () => {
       }
     })
     .on("data", async function (event) {
-      const transaction = await getTransactionByHash(event.transactionHash);
+      if (!latestConfiguration) {
+        return;
+      }
+      const {
+        fromAddress,
+        toAddress,
+        minBlockNumber,
+        minTransactionValue,
+        maxTransactionValue,
+      } = latestConfiguration;
+
+      const { blockNumber, transactionHash } = event;
+      if (minBlockNumber && blockNumber < minBlockNumber) {
+        return;
+      }
+      const transaction = await getTransactionByHash(transactionHash);
       if (transaction) {
-        const { hash, from, to, value, blockNumber } = transaction;
+        const { hash, from, to, value, transactionIndex } = transaction;
+        if (!transactionIndex) {
+          return;
+        }
         const transactionEthValue = Number(web3.utils.fromWei(value, "ether"));
+
+        if (fromAddress && fromAddress !== from) {
+          return;
+        }
+        if (toAddress && toAddress !== to) {
+          return;
+        }
+        if (minTransactionValue && transactionEthValue < minTransactionValue) {
+          return;
+        }
+        if (maxTransactionValue && transactionEthValue > maxTransactionValue) {
+          return;
+        }
+        const transactionModel = new TransactionSchemaModel({
+          uuid: uuidv4(),
+          transactionHash: hash,
+          configuration: latestConfiguration._id,
+        });
+        const savedTransaction = await transactionModel.save();
+        console.log(
+          `Transaction with id '${savedTransaction.uuid}' and hash '${transactionHash}' was successfully saved!`
+        );
       }
     });
 };
@@ -69,6 +113,13 @@ const loadNewConfiguration = async () => {
   latestConfiguration = await DynamicConfigurationModel.findOne()
     .getLatest()
     .exec();
+  if (latestConfiguration) {
+    console.log(
+      `Configuration '${latestConfiguration.uuid}' has been loaded...`
+    );
+  } else {
+    console.log("[Warning] No configuration present. Please create one!");
+  }
 };
 
 const isValidAddress = (address) => {
