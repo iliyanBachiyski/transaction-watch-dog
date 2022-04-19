@@ -64,15 +64,27 @@ const subscribeForLogs = () => {
         const transactionEthValue = Number(web3.utils.fromWei(value, "ether"));
 
         if (fromAddress && fromAddress !== from) {
+          console.log(
+            `Transaction '${transactionHash}' is skipped. From address does not match.`
+          );
           return;
         }
         if (toAddress && toAddress !== to) {
+          console.log(
+            `Transaction '${transactionHash}' is skipped. To address does not match.`
+          );
           return;
         }
         if (minTransactionValue && transactionEthValue < minTransactionValue) {
+          console.log(
+            `Transaction '${transactionHash}' is skipped. Min transaction value does not match.`
+          );
           return;
         }
         if (maxTransactionValue && transactionEthValue > maxTransactionValue) {
+          console.log(
+            `Transaction '${transactionHash}' is skipped. Max transaction value does not match.`
+          );
           return;
         }
         const transactionModel = new TransactionSchemaModel({
