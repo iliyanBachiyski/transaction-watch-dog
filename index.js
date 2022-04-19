@@ -1,4 +1,4 @@
 require("./expressApp");
-const { subscribeForPendingTransactions } = require("./web3");
+const { subscribeForLogs } = require("./web3");
 
-subscribeForPendingTransactions();
+subscribeForLogs();

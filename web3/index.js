@@ -6,7 +6,7 @@ const web3SocketProvider = new Web3(
   new Web3.providers.WebsocketProvider(MAINNET_SOCKET_URL)
 );
 
-let pendingTransactionsSubscription;
+let logsSubscription;
 
 const getEthBalanceByAddress = (address) => {
   return new Promise((resolve, _) => {
@@ -25,17 +25,15 @@ const getEthBalanceByAddress = (address) => {
   });
 };
 
-const subscribeForPendingTransactions = () => {
-  pendingTransactionsSubscription = web3SocketProvider.eth
-    .subscribe("pendingTransactions", function (error, hash) {
+const subscribeForLogs = () => {
+  logsSubscription = web3SocketProvider.eth
+    .subscribe("logs", function (error) {
       if (error) {
         console.log("[PendingTransactions Error] -> ", error);
-      } else {
-        getTransactionByHash(hash);
       }
     })
     .on("data", function (transaction) {
-      // console.log("[PendingTransactions] Data -> ", transaction);
+      getTransactionByHash(transaction.transactionHash);
     });
 };
 
@@ -46,27 +44,26 @@ const getTransactionByHash = (hash) => {
     } else if (transaction) {
       const { from, to, value, hash } = transaction;
       const transactionEthValue = web3.utils.fromWei(value, "ether");
-      const { balance: senderBalance } = await getEthBalanceByAddress(from);
-      const { balance: receiverBalance } = await getEthBalanceByAddress(to);
+      console.log(transaction);
       console.log(
         "[GetTransaction Info] -> ",
         `[${hash}]`,
-        `Sending ${transactionEthValue} ETH from ${from} (Balance: ${senderBalance} ETH) to ${to} (Balance: ${receiverBalance} ETH)`
+        `Sending ${transactionEthValue} ETH from ${from} to ${to}.`
       );
     }
   });
 };
 
-const unsubscribesForPendingTransactions = () => {
+const unsubscribesForLogs = () => {
   // unsubscribes the subscription
-  pendingTransactionsSubscription.unsubscribe(function (error, success) {
+  logsSubscription.unsubscribe(function (error, success) {
     if (success) console.log("Successfully unsubscribed!");
     if (error) console.log("Something went wrond during unsubscription!");
   });
 };
 
 module.exports = {
-  subscribeForPendingTransactions,
-  unsubscribesForPendingTransactions,
+  subscribeForLogs,
+  unsubscribesForLogs,
   getEthBalanceByAddress,
 };
