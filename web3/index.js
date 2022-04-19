@@ -1,5 +1,6 @@
 const Web3 = require("web3");
 const { MAINNET_HTTPS_URL, MAINNET_SOCKET_URL } = require("../config");
+const { DynamicConfigurationModel } = require("../database");
 
 const web3 = new Web3(new Web3.providers.HttpProvider(MAINNET_HTTPS_URL));
 const web3SocketProvider = new Web3(
@@ -7,6 +8,7 @@ const web3SocketProvider = new Web3(
 );
 
 let logsSubscription;
+let latestConfiguration;
 
 const getEthBalanceByAddress = (address) => {
   return new Promise((resolve, _) => {
@@ -26,6 +28,7 @@ const getEthBalanceByAddress = (address) => {
 };
 
 const subscribeForLogs = () => {
+  loadNewConfiguration();
   logsSubscription = web3SocketProvider.eth
     .subscribe("logs", function (error) {
       if (error) {
@@ -62,6 +65,12 @@ const unsubscribesForLogs = () => {
   });
 };
 
+const loadNewConfiguration = async () => {
+  latestConfiguration = await DynamicConfigurationModel.findOne()
+    .getLatest()
+    .exec();
+};
+
 const isValidAddress = (address) => {
   return web3.utils.isAddress(address);
 };
@@ -71,4 +80,5 @@ module.exports = {
   unsubscribesForLogs,
   getEthBalanceByAddress,
   isValidAddress,
+  loadNewConfiguration,
 };

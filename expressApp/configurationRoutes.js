@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { StatusCodes } = require("http-status-codes");
 const { v4: uuidv4 } = require("uuid");
-const { isValidAddress } = require("../web3");
+const { isValidAddress, loadNewConfiguration } = require("../web3");
 
 const { DynamicConfigurationModel } = require("../database");
 
@@ -92,6 +92,7 @@ router.post(
         uuid: uuidv4(),
       });
       const item = await newConfiguration.save();
+      loadNewConfiguration();
       return res.json({
         id: item.uuid,
       });
