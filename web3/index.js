@@ -14,23 +14,6 @@ const web3SocketProvider = new Web3(
 let logsSubscription;
 let latestConfiguration;
 
-const getEthBalanceByAddress = (address) => {
-  return new Promise((resolve, _) => {
-    web3.eth.getBalance(address, function (error, result) {
-      if (error) {
-        console.log(error);
-        resolve({
-          error,
-        });
-      } else {
-        resolve({
-          balance: web3.utils.fromWei(result, "ether"),
-        });
-      }
-    });
-  });
-};
-
 const subscribeForLogs = () => {
   loadNewConfiguration();
   logsSubscription = web3SocketProvider.eth
@@ -141,7 +124,6 @@ const isValidAddress = (address) => {
 module.exports = {
   subscribeForLogs,
   unsubscribesForLogs,
-  getEthBalanceByAddress,
   isValidAddress,
   loadNewConfiguration,
 };
