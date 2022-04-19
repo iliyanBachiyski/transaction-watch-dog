@@ -2,7 +2,7 @@ const express = require("express");
 const { PORT } = require("../config");
 const { getEthBalanceByAddress } = require("../web3");
 require("../database");
-const configurationRoute = require("./routes");
+const configurationRoute = require("./configurationRoutes");
 const app = express();
 
 app.get("/", async (req, res) => {

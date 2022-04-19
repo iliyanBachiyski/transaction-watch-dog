@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const { DynamicConfigurationModel } = require("../database");
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (_, res, next) => {
   try {
     const result = await DynamicConfigurationModel.find().exec();
     const count = await DynamicConfigurationModel.countDocuments();
