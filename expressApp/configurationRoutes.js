@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { StatusCodes } = require("http-status-codes");
-const createError = require("http-errors");
 const { v4: uuidv4 } = require("uuid");
+const { isValidAddress } = require("../web3");
 
 const { DynamicConfigurationModel } = require("../database");
 
@@ -22,19 +22,17 @@ const validateCreateDynamicConfigurationRequest = async function (
   next();
 };
 
-router.get("/", async (_, res, next) => {
+router.get("/", async (_, res) => {
   try {
     const result = await DynamicConfigurationModel.find().exec();
     const count = await DynamicConfigurationModel.countDocuments();
     return res.json({ result, count });
   } catch (error) {
     console.log(error);
-    return next(
-      createError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Something went wrong. Please try again!"
-      )
-    );
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    return res.json({
+      message: "Something went wrong. Please try again!",
+    });
   }
 });
 
@@ -44,6 +42,7 @@ router.get("/:id", async (req, res) => {
       .byUUID(req.params.id)
       .exec();
     if (!configuration) {
+      res.status(StatusCodes.NOT_FOUND);
       return res.json({
         message: `Configuration with id '${req.params.id}' was not found!`,
       });
@@ -51,20 +50,34 @@ router.get("/:id", async (req, res) => {
     return res.json(configuration);
   } catch (error) {
     console.log(error);
-    return next(
-      createError(
-        StatusCodes.INTERNAL_SERVER_ERROR,
-        "Something went wrong. Please try again!"
-      )
-    );
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    return res.json({
+      message: "Something went wrong. Please try again!",
+    });
   }
 });
 
 router.post(
   "/create",
   validateCreateDynamicConfigurationRequest,
-  async (req, res, next) => {
+  async (req, res) => {
     try {
+      const {
+        fromAddress,
+        toAddress,
+        minBlockNumber,
+        minTransactionValue,
+        maxTransactionValue,
+      } = req.body;
+      if (
+        (fromAddress && !isValidAddress(fromAddress)) ||
+        (toAddress && !isValidAddress(toAddress))
+      ) {
+        res.status(StatusCodes.BAD_REQUEST);
+        return res.json({
+          message: "Please provide a valid address",
+        });
+      }
       const latestConfiguration = await DynamicConfigurationModel.findOne()
         .getLatest()
         .exec();
@@ -84,12 +97,10 @@ router.post(
       });
     } catch (error) {
       console.log(error);
-      return next(
-        createError(
-          StatusCodes.INTERNAL_SERVER_ERROR,
-          "Something went wrong. Please try again!"
-        )
-      );
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+      return res.json({
+        message: "Something went wrong. Please try again!",
+      });
     }
   }
 );

@@ -62,8 +62,13 @@ const unsubscribesForLogs = () => {
   });
 };
 
+const isValidAddress = (address) => {
+  return web3.utils.isAddress(address);
+};
+
 module.exports = {
   subscribeForLogs,
   unsubscribesForLogs,
   getEthBalanceByAddress,
+  isValidAddress,
 };
