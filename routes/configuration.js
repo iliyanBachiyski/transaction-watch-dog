@@ -62,13 +62,7 @@ router.post(
   validateCreateDynamicConfigurationRequest,
   async (req, res) => {
     try {
-      const {
-        fromAddress,
-        toAddress,
-        minBlockNumber,
-        minTransactionValue,
-        maxTransactionValue,
-      } = req.body;
+      const { fromAddress, toAddress } = req.body;
       if (
         (fromAddress && !isValidAddress(fromAddress)) ||
         (toAddress && !isValidAddress(toAddress))
