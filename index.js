@@ -1,4 +1,4 @@
-const { subscribeForLogs } = require("./web3");
+const { subscribeForLogs, subscribeForNewBlockHeaders } = require("./web3");
 
 require("./database");
 const express = require("express");
@@ -14,5 +14,6 @@ app.use("/transactions", transactionsRoute);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
-  subscribeForLogs();
+  // subscribeForLogs();
+  subscribeForNewBlockHeaders();
 });
